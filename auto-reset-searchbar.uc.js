@@ -12,7 +12,7 @@
     var func = BrowserSearch.searchBar.handleSearchCommand.toString()
                    .replace(/^\s*function.+{/, '').replace(/}\s*$/, '');
     
-    var code = 'textBox.value="";
+    var code = 'textBox.value="";'
              + 'var searchbar = BrowserSearch.searchBar;'
              + 'searchbar.currentEngine = searchbar.engines[0];';
 
