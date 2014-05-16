@@ -4,7 +4,7 @@
 // @version        1.0
 // @author         oflow
 // @compatibility  Firefox 24.5
-// @namespace      http://oflow.me/
+// @namespace      http://oflow.me/archives/492
 // ==/UserScript==
 
 (function() {
