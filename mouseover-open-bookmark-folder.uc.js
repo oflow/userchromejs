@@ -19,7 +19,15 @@
         if (item.getAttribute('type') == 'menu') {
             folders.push(item);
             item.addEventListener('mouseover', openBookmarkFolder, false);
+        } else {
+            // フォルダじゃなかったらマウスオーバーで既に開いてるメニューを閉じる
+            item.addEventListener('mouseover', closeBookmarkMenu, false);
         }
+    }
+    function closeBookmarkMenu() {
+        folders.forEach(function(folder) {
+            folder.open = false;
+        });
     }
     function openBookmarkFolder(e) {
         // ブラウザが非アクティブの時は開かない
@@ -28,10 +36,11 @@
         // toolbarbutton
         if (item.nodeName == 'toolbarbutton') {
             // 他にメニュー開いてるかもしれないので閉じる
-            folders.forEach(function(folder) {
-                folder.open = false;
-            });
+            closeBookmarkMenu();
             item.open = true;
         }
+    }
+    function d(s) {
+        document.getElementById("liberator-message").value = s;
     }
 })();
