@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name           GMarks Menu in Bookmark Toolbar
 // @description    GMarksのメニューをブックマークツールバーの先頭に移動させるやつ
-// @version        1.0
+// @version        1.1
 // @author         oflow
-// @compatibility  Firefox 24.5
+// @compatibility  Firefox ESR 24.8, Firefox ESR 31
 // @namespace      http://oflow.me/archives/492
 // ==/UserScript==
 
@@ -21,8 +21,8 @@
     var personalBookmarks = document.getElementById('PlacesToolbarItems');
     if (personalBookmarks) {
         var bookmarkItem = personalBookmarks.getElementsByClassName('bookmark-item');
-        if (bookmarkItem) {
-            personalBookmarks.insertBefore(toolbarbutton, bookmarkItem[0]);
+        if (bookmarkItem && bookmarkItem[0]) {
+            bookmarkItem[0].parentNode.insertBefore(toolbarbutton, bookmarkItem[0]);
         } else {
             personalBookmarks.appendChild(toolbarbutton);
         }
