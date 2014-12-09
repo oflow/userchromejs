@@ -2,9 +2,9 @@
 // @name           Focus Last Tab
 // @namespace      http://oflow.me/archives/1269
 // @description    タブを閉じたときに直前に開いてたタブにフォーカス
-// @compatibility  Firefox ESR 31
+// @compatibility  Firefox ESR 31, 34.0.5
 // @author         oflow
-// @version        1.3
+// @version        1.3.1
 // ==/UserScript==
 
 (function() {
@@ -72,12 +72,12 @@
         },
         select: function(tab) {
             // 選択したらタイムスタンプ更新して未読消す
-            ss.setTabValue(tab, 'data-flt-timestamp', Date.now());
+            ss.setTabValue(tab, 'data-flt-timestamp', Date.now().toString());
             ss.deleteTabValue(tab, 'data-flt-unread');
         },
         open: function(tab) {
             // タイムスタンプ追加、未読追加
-            ss.setTabValue(tab, 'data-flt-timestamp', Date.now());
+            ss.setTabValue(tab, 'data-flt-timestamp', Date.now().toString());
             ss.setTabValue(tab, 'data-flt-unread', 'true');
         },
         init: function() {
