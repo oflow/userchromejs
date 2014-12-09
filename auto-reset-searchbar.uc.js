@@ -1,30 +1,44 @@
 // ==UserScript==
 // @name           auto reset searchbar
 // @description    Web検索したらキーワードをクリアして一番上の検索エンジンに戻す
-// @version        1.2
+// @version        1.2.1
 // @author         oflow
 // @compatibility  Firefox 31(ESR), 34
 // @namespace      http://oflow.me/archives/337
 // ==/UserScript==
 
 (function() {
-    // リセットするまでにちょっと時間をおくかどうか [true]
-    // false にすると即時クリア
+    // リセットするまでにちょっと時間をおくかどうか [true=タイマー使う, false=即時クリア]
     const USE_TIMER = true;
     // リセットするまでの時間(ミリ秒) [3000=3秒]
     const TIMER_MS  = 3000;
-    // 検索したら一番上の検索エンジンに戻すかどうか [true]
+    // 検索したら一番上の検索エンジンに戻すかどうか [true=戻す, false=そのまま]
     const USE_DEFAULT_ENGINE = true;
+    // リセットタイマーが動いてるときに検索バーにフォーカスでタイマーを止めるかどうか [true=止める, false=止めない]
+    const USE_FOCUS = true;
+    // 検索ボタンクリックでクリアするかどうか [true=クリア, false=そのまま]
+    const USE_CLICK = true;
+    // 貼り付けて検索のときにクリアするかどうか [true=クリア]
+    const USE_COMMAND = true;
+    // Enterキーで検索のときにクリアするかどうか [true=クリア]
+    const USE_ENTER = true;
 
     var ucjsAutoResetSearchbar = {
         timer: null,
         init: function() {
             var searchbar = BrowserSearch.searchBar;
-            // 特定の動作のみクリアする場合はこのあたりをコメントアウト
-            searchbar.addEventListener('focus', this, false);
-            searchbar.addEventListener('click', this, false);
-            searchbar.addEventListener('command', this, false);
-            searchbar.addEventListener('keypress', this, false);
+            if (USE_FOCUS) {
+                searchbar.addEventListener('focus', this, false);
+            }
+            if (USE_CLICK) {
+                searchbar.addEventListener('click', this, false);
+            }
+            if (USE_COMMAND) {
+                searchbar.addEventListener('command', this, false);
+            }
+            if (USE_ENTER) {
+                searchbar.addEventListener('keypress', this, false);
+            }
         },
         handleEvent: function(e) {
             switch (e.type) {
@@ -78,9 +92,6 @@
                 }, TIMER_MS);
             } else {
                 textbox.value = '';
-                if (USE_DEFAULT_ENGINE) {
-                    searchbar.currentEngine = searchbar.engines[0];
-                }
 
             }
         }
