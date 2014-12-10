@@ -1,16 +1,18 @@
 // ==UserScript==
 // @name           Focus Last Tab
-// @namespace      http://oflow.me/archives/1269
 // @description    タブを閉じたときに直前に開いてたタブにフォーカス
-// @compatibility  Firefox ESR 31, 34.0.5
+// @version        1.3.3
+// @include        main
+// @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
-// @version        1.3.1
+// @namespace      http://oflow.me/archives/1269
 // ==/UserScript==
 
 (function() {
+    // ピン留めしたタブも含めるか [true=ピン留めタブもフォーカス, false=ピン留めは無視]
+    const FLT_FOCUS_PINNED = true;
+
     // Session store APIを使ってタブにタイムスタンプ・未読を保存する
-    const Cc = Components.classes;
-    const Ci = Components.interfaces;
     var ss = Cc["@mozilla.org/browser/sessionstore;1"].getService(Ci.nsISessionStore);
 
     var ucjsFocusLastTab = {
@@ -38,6 +40,9 @@
                 var timestamp = ss.getTabValue(tabs[i], 'data-flt-timestamp'),
                     unread    = ss.getTabValue(tabs[i], 'data-flt-unread');
 
+                if (!FLT_FOCUS_PINNED && tabs[i].pinned) {
+                    continue;
+                }
                 if (tabs[i] == tab || !timestamp) {
                     continue;
                 }
