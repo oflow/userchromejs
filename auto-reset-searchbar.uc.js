@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name           auto reset searchbar
 // @description    Web検索したらキーワードをクリアして一番上の検索エンジンに戻す
-// @version        1.2.2
+// @version        1.2.3
+// @include        main
+// @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
-// @compatibility  Firefox 31(ESR), 34
 // @namespace      http://oflow.me/archives/337
 // ==/UserScript==
 
@@ -11,11 +12,11 @@
     // リセットするまでにちょっと時間をおくかどうか [true=タイマー使う, false=即時クリア]
     const ARS_USE_TIMER = true;
     // リセットするまでの時間(ミリ秒) [3000=3秒]
-    const ARS_TIMER_MS  = 3000;
+    const ARS_TIMER_MS  = 2000;
     // 検索したら一番上の検索エンジンに戻すかどうか [true=戻す, false=そのまま]
     const ARS_USE_DEFAULT_ENGINE = true;
     // リセットタイマーが動いてるときに検索バーにフォーカスでタイマーを止めるかどうか [true=止める, false=止めない]
-    const ARS_USE_FOCUS = true;
+    const ARS_USE_FOCUS = false;
     // 検索ボタンクリックでクリアするかどうか [true=クリア, false=そのまま]
     const ARS_USE_CLICK = true;
     // 貼り付けて検索のときにクリアするかどうか [true=クリア]
