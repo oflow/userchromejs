@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Focus Last or Unread Tab
 // @description    タブを閉じたときに直前に開いてたタブか未読タブにフォーカスしたり
-// @version        1.4.5
+// @version        1.4.6
 // @include        main
 // @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
@@ -94,6 +94,8 @@
                 var unread = ss.getTabValue(tabs[i], 'data-flt-unread');
                 if (unread) {
                     this.markAsUnread(tabs[i]);
+                } else {
+                    this.markAsRead(tabs[i]);
                 }
             }
         },
@@ -242,7 +244,7 @@
                 document.insertBefore(style, document.documentElement);
             }
             // セッション復元時に未読属性を戻す
-            document.addEventListener('SSTabRestoring', this, false);
+            gBrowser.tabContainer.addEventListener('SSTabRestoring', this, false);
         }
     };
 
