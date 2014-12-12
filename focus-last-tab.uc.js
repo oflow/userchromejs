@@ -186,7 +186,6 @@
             // 選択したらタイムスタンプ更新して未読消す
             ss.setTabValue(tab, 'data-flt-timestamp', Date.now().toString());
             this.markAsRead(tab);
-            this.debug('select');
         },
         open: function(tab) {
             // タイムスタンプ追加、未読追加
