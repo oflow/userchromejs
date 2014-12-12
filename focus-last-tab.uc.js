@@ -71,7 +71,7 @@
             }
         },
         _sort: function(tabs) {
-            if (!tab || !tabs.length) {
+            if (!tabs || !tabs.length) {
                 return [];
             }
             tabs.sort(function(a, b) {
