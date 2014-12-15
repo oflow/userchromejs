@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<!--
+// ==UserScript==
+// @name          Toggle FindBar
+// @description   Ctrl+Fで検索バーの表示切り替え
+// @version       1.0
+// @include       main
+// @compatibility Firefox 4.0, ESR31.3, 34.0.5
+// @author        oflow
+// @namespace     https://oflow.me/archives/256
+// ==/UserScript==
+-->
+<script type="application/x-javascript"><![CDATA[
+var ucjsToggleFindBar = function() {
+    gFindBar.hidden ? gFindBar.onFindCommand() : gFindBar.close();
+}
+]]></script>
+<window id="main-window">
+  <keyset id="mainKeyset"><key id="key_find" oncommand="ucjsToggleFindBar()" /></keyset>
+  <commandset id="mainCommandSet"><command id="cmd_find" oncommand="ucjsToggleFindBar()" /></commandset>
+</window>
+</overlay>
