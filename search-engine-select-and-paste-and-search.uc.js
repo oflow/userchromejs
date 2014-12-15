@@ -1,17 +1,18 @@
 // ==UserScript==
 // @name           Search Engine middle-click "Select and Paste and Search"
 // @description    検索エンジンメニューのミドルクリックで検索エンジンを切り替えてから貼り付けて検索
-// @version        1.0
+// @version        1.1
 // @include        main
 // @compatibility  Firefox ESR31.3
 // @author         oflow
-// @namespace      http://oflow.me/
+// @namespace      http://oflow.me/archives/1327
 // ==/UserScript==
 
 (function() {
     var ucjsSearchEngineMiddleClickSearch = {
+        searchbar: BrowserSearch.searchBar,
         init: function() {
-            var searchbar = BrowserSearch.searchBar;
+            var searchbar = this.searchbar;
             if (!searchbar) {
                 return;
             }
@@ -22,14 +23,15 @@
             }, false);
         },
         handleEvent: function(e) {
+            var target = e.originalTarget;
             switch (e.type) {
                 case 'click':
                     if (e.button == 1) {
-                        if (e.originalTarget.nodeName == 'menuitem') {
-                            this.select(e.originalTarget);
+                        if (target.nodeName == 'menuitem') {
+                            this.select(target);
                             this.paste();
                             this.doSearch();
-                        } else if (e.originalTarget.getAttribute('anonid') == 'searchbar-engine-button') {
+                        } else if (target.getAttribute('anonid') == 'searchbar-engine-button') {
                             this.paste();
                             this.doSearch();
                         }
@@ -39,23 +41,23 @@
             }
         },
         paste: function() {
-            BrowserSearch.searchBar.select();
+            this.searchbar.select();
             goDoCommand('cmd_paste');
         },
         select: function(menuitem) {
-            var name = menuitem.label,
-                searchbar = BrowserSearch.searchBar;
+            var name      = menuitem.label,
+                searchbar = this.searchbar,
+                engines   = searchbar.engines;
 
-            for (var i = 0; i < searchbar.engines.length; i++) {
-                var engine = searchbar.engines[i];
-                if (name == engine.name) {
-                    searchbar.currentEngine = searchbar.engines[i];
+            for (var i = 0; i < engines.length; i++) {
+                if (name == engines[i].name) {
+                    searchbar.currentEngine = engines[i];
                     break;
                 }
             }
         },
         doSearch: function() {
-            BrowserSearch.searchBar.handleSearchCommand();
+            this.searchbar.handleSearchCommand();
         }
     };
     ucjsSearchEngineMiddleClickSearch.init();
