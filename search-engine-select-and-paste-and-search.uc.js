@@ -28,8 +28,8 @@
                 case 'click':
                     if (e.button == 1) {
                         if (target.nodeName == 'menuitem') {
-                            this.select(target);
                             this.paste();
+                            this.select(target);
                             this.doSearch();
                         } else if (target.getAttribute('anonid') == 'searchbar-engine-button') {
                             this.paste();
