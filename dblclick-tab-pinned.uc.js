@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           dblclick Tab Pinned
 // @description    タブのダブルクリックでピン留めトグル
-// @version        1.0
+// @version        1.0.1
 // @include        main
-// @compatibility  Firefox 4.0, 11.0, ESR31.3, 34.0.5
+// @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
-// @namespace      http://oflow.me/
+// @namespace      http://oflow.me/archives/330
 // ==/UserScript==
 
 (function() {
@@ -22,5 +22,9 @@
         e.preventDefault();
         e.stopPropagation();
     };
-    gBrowser.mTabContainer.addEventListener('dblclick', ucjsTabPinned, false);
+    gBrowser.tabContainer.addEventListener('dblclick', ucjsTabPinned, false);
+    window.addEventListener('unload', function uninit() {
+        gBrowser.tabContainer.removeEventListener('dblclick', ucjsTabPinned, false);
+        window.removeEventListener('unload', uninit, false);
+    }, false);
 })();
