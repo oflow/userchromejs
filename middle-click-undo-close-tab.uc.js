@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name           middle-click "Undo Close Tab"
 // @description    タブバー上のミドルクリックで閉じたタブを元に戻すだけ
-// @version        1.0
+// @version        1.1
+// @include        main
+// @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
-// @compatibility  Firefox 4.0, 11.0
-// @namespace      http://oflow.me/
-// @note           Firefox 11.0 で動作確認
-// @note           mTabContainerの外にある新規タブ追加ボタンのミドルクリックでも戻す
+// @namespace      https://oflow.me/archives/265
+// @note           Firefox 31.3, 34.0.5 で動作確認
+// @note           remove arguments.callee
+// @note           mTabContainer -> tabContainer
 // ==/UserScript==
 
 (function() {
@@ -26,10 +28,9 @@
     // 新規タブ追加ボタン
     document.getElementById('new-tab-button').onclick = ucjsUndoCloseTab;
     // タブバー
-    gBrowser.mTabContainer.addEventListener('click', ucjsUndoCloseTab, true);
-
-    window.addEventListener('unload', function() {
-        gBrowser.mTabContainer.removeEventListener('click', ucjsUndoCloseTab, true);
-        window.removeEventListener('unload', arguments.callee, false);
+    gBrowser.tabContainer.addEventListener('click', ucjsUndoCloseTab, true);
+    window.addEventListener('unload', function uninit() {
+        gBrowser.tabContainer.removeEventListener('click', ucjsUndoCloseTab, true);
+        window.removeEventListener('unload', uninit, false);
     }, false);
 })();
