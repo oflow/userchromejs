@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Focus Last or Unread Tab
 // @description    タブを閉じたときに直前に開いてたタブか未読タブにフォーカスしたり
-// @version        1.4.6
+// @version        1.4.7
 // @include        main
 // @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
@@ -68,6 +68,9 @@
                 case 'SSTabRestoring':
                     this.restore();
                     break;
+                case 'unload':
+                    this.uninit();
+                    break;
             }
         },
         _sort: function(tabs) {
@@ -129,13 +132,13 @@
                 if (tabs[i] == selectedTab || !timestamp) {
                     continue;
                 }
-                if (detail > 0) {
-                    // ↓スクロールで1つ戻る
+                if (detail < 0) {
+                    // ↑スクロールで1つ戻る
                     if (selectedTimestamp < timestamp) {
                         continue;
                     }
-                } else if (detail < 0) {
-                    // ↑スクロールで1つ進む
+                } else if (detail > 0) {
+                    // ↓スクロールで1つ進む
                     if (selectedTimestamp > timestamp) {
                         continue;
                     }
@@ -228,16 +231,6 @@
             if (FLT_USE_SHIFT_WHEEL) {
                 gBrowser.tabContainer.addEventListener('DOMMouseScroll', this, true);
             }
-            window.addEventListener('beforeunload', function() {
-                gBrowser.tabContainer.removeEventListener('TabClose', this, false);
-                gBrowser.tabContainer.removeEventListener('TabSelect', this, false);
-                gBrowser.tabContainer.removeEventListener('TabOpen', this, false);
-                if (FLT_USE_SHIFT_WHEEL) {
-                    gBrowser.tabContainer.removeEventListener('DOMMouseScroll', this, true);
-                }
-                window.removeEventListener('beforeunload', arguments.callee, false);
-            }, false);
-
             if (FLT_UNREAD_CSS) {
                 var style = document.createProcessingInstruction('xml-stylesheet','type="text/css" href="data:text/css,'+ encodeURIComponent(FLT_UNREAD_CSS) +'"');
                 style.id = 'ucjs-flt-style';
@@ -245,6 +238,17 @@
             }
             // セッション復元時に未読属性を戻す
             gBrowser.tabContainer.addEventListener('SSTabRestoring', this, false);
+            window.addEventListener('unload', this, false);
+        },
+        uninit: function() {
+            gBrowser.tabContainer.removeEventListener('TabClose', this, false);
+            gBrowser.tabContainer.removeEventListener('TabSelect', this, false);
+            gBrowser.tabContainer.removeEventListener('TabOpen', this, false);
+            if (FLT_USE_SHIFT_WHEEL) {
+                gBrowser.tabContainer.removeEventListener('DOMMouseScroll', this, true);
+            }
+            gBrowser.tabContainer.removeEventListener('SSTabRestoring', this, false);
+            window.removeEventListener('unload', this, false);
         }
     };
 
