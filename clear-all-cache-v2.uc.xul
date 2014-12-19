@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<!--
+// ==UserScript==
+// @name           Clear All Cache (HTTP cache v2)
+// @description    ツールメニューに「キャッシュを消去」を追加する
+// @version        1.1
+// @include        main
+// @compatibility  Firefox 34.0.5
+// @author         oflow
+// @namespace      https://oflow.me/archives/1347
+// @note           HTTP cache v1 API disabled (fx32?)
+//                 HTTP cache v2 API https://developer.mozilla.org/en-US/docs/HTTP_Cache
+//                 ESR 31
+//                 -> browser.cache.use_new_backend = 1
+// ==/UserScript==
+-->
+<script type="application/x-javascript"><![CDATA[
+var ucjsCacheClear = function() {
+    var cacheSS = Cc["@mozilla.org/netwerk/cache-storage-service;1"].getService(Ci.nsICacheStorageService);
+    try {
+        cacheSS.clear();
+    } catch (e) {
+    }
+    // Vimperator
+    var liberator = document.getElementById("liberator-message");
+    if (liberator) {
+        liberator.value = 'キャッシュ消去';
+    }
+}
+]]></script>
+<menupopup id="menu_ToolsPopup">
+    <menuitem id="menu_ToolsCacheClear"
+              label="キャッシュを消去"
+              accesskey="c"
+              oncommand="ucjsCacheClear()"/>
+</menupopup>
+</overlay>
