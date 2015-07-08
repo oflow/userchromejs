@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Focus Last or Unread Tab
 // @description    タブを閉じたときに直前に開いてたタブか未読タブにフォーカスしたり
-// @version        1.4.7
+// @version        1.4.8
 // @include        main
 // @compatibility  Firefox ESR31.3, 34.0.5
 // @author         oflow
@@ -157,6 +157,10 @@
                 container = [],
                 hasUnread     = false;
 
+            if (tab.getAttribute('selected') !== 'true') {
+                // 現在開いているタブじゃない場合は何もしない
+                return;
+            }
             for (var i = 0; i < tabsLen; i++) {
                 var timestamp = ss.getTabValue(tabs[i], 'data-flt-timestamp'),
                     unread    = ss.getTabValue(tabs[i], 'data-flt-unread');
