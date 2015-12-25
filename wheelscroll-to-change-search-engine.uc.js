@@ -51,8 +51,11 @@
             window.addEventListener('unload', this, false);
             if (icon) {
                 this.setEngine();
+            }
+            if (css) {
                 var style = document.createProcessingInstruction('xml-stylesheet','type="text/css" href="data:text/css,'+ encodeURIComponent(css) +'"');
                 document.insertBefore(style, document.documentElement);
+                css = null;
             }
         },
         handleEvent: function(event) {
